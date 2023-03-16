@@ -1,0 +1,55 @@
+import speech_recognition as sr
+input_string= input("please enter the words(space seperated) you're looking for in the audio file: ")
+# initialize recognizer
+r = sr.Recognizer()
+
+# define input audio file path
+audio_file = "./mydir/harvard.wav"
+
+# open the audio file
+with sr.AudioFile(audio_file) as source:
+    # read the audio data
+    audio_data = r.record(source)
+
+    # recognize speech using Google Speech Recognition
+    text = r.recognize_google(audio_data)
+
+    # define output transcript file path
+    transcript_file = "./mydir/transcript.txt"
+
+    # write text to the transcript file
+    with open(transcript_file, mode='w') as file:
+        file.write(text)
+
+
+# define function to count occurrences of words in a file
+def count_occurrences():
+    words_list= input_string.strip().split()
+
+    # initialize hash map to store word frequencies
+    word_freq = {}
+
+    # open the file for reading
+    with open(transcript_file, 'r') as file:
+
+        # read each line of the file
+        for line in file:
+
+            # split the line into words
+            words = line.strip().split()
+
+            # count the occurrences of each word
+            for word in words:
+
+                # check if the word is in the given list
+                if word in words_list:
+
+                    # update the word frequency in the hash map
+                    if word in word_freq:
+                        word_freq[word] += 1
+                    else:
+                        word_freq[word] = 1
+
+    return word_freq
+
+print(count_occurrences())
